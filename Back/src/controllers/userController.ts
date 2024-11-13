@@ -13,7 +13,7 @@ export const createUser = async (
   try {
     const findUserName = await Users.findOne({ userName: user.userName });
     if (findUserName) {
-      res.status(400).json({ message: "usename is alerdy use" });
+      res.status(400).json({ message: "username is already use" });
       return;
     }
 
