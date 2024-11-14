@@ -44,19 +44,19 @@ const LoginPage: FC = () => {
     const result = await dispatch(loginUser({userName,password}))
   // localStorage.setItem("token",result.payload.data.token)
     console.log(result)
-    // if (user){
+    if (result){
 
     
-    // try {
-    //   const result = await dispatch(loginUser(user))
-    //   if (result){
-    //     localStorage.setItem('userName',userName); 
-    //     navigate("/votePage");
-    //   }
+    try {
+       
+       
+       
+        navigate("/attackPage");
+      
      
-    // } catch (err) {
-    //   console.error("Login failed:", err);
-    // }}
+     } catch (err) {
+       console.error("Login failed:", err);
+     }}
   };
 
   return (
