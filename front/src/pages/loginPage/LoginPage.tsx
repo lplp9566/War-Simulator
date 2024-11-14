@@ -6,6 +6,10 @@ import {  Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../store/features/UserSlice";
 import { User } from "../../types";
 import axios from "axios";
+import { useSocket } from "../../services/useSockit";
+
+
+
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -17,21 +21,8 @@ const LoginPage: FC = () => {
   const navigate = useNavigate();
   const { status, error } = useSelector((state: RootState) => state.user);
 
-  useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const result = await axios.get(`${BASE_URL}/api/getAllUsers`);
-    //     if(result){
 
-    //       setusers(result.data);
-    //     }
-       
-    //   } catch (error) {
-    //     console.error("Failed to fetch users:", error);
-    //   }
-    // };
-    // fetchData();
-  }, []);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

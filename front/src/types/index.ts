@@ -12,3 +12,11 @@ export interface resources{
   amount:number
 }
 export type Status = "idle" | "pending" | "fulfilled" | "rejected"
+
+
+export interface IAttack {
+  attackerUserName: string;
+  direction: string;
+  timeToKil: number;
+  status:  "Launched" | "Hit" | "Intercepted";
+}

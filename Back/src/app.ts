@@ -7,6 +7,8 @@ import organization, { IOrganization } from "./models/organization";
 import users from "./models/users";
 import router from "./routes/authRoute";
 import attacks from "./models/attacks";
+import { createServer } from 'http';
+import { initializeSocketServer } from "./servers/socketServer";
 
 dotenv.config();
 
@@ -16,6 +18,9 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(cors());
+const httpServer = createServer(app);
+const io = initializeSocketServer(httpServer);
+
 connectDB();
 
 // Routes
@@ -23,7 +28,7 @@ connectDB();
 // Error handling middleware
 app.use("/api", router);
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
