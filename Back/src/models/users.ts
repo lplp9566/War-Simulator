@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 import { OrganizationSchema } from "./organization";
+import { strict } from "assert";
 export interface  LaunchedRockets{
     rocket:string,
     timeToEit:number|string,
@@ -15,7 +16,7 @@ export interface IUser extends Document {
   userName: string;
   password: string;
   organization: string;
-  location: "North" | "South" | "Center" | "West Bank" | null;
+  location: string |null
   resources: IResource[] | null;
   launchedRockets: LaunchedRockets[] | null;
 }
@@ -40,7 +41,7 @@ export const UsersSchema = new Schema<IUser>({
   },
   location: {
     type: String,
-    enum: ["North", "South", "Center", "West Bank", "null"],
+    // enum: ["North", "South", "IDF - Center", "West Bank", "null"],
   },
   launchedRockets: {
     type: Array<LaunchedRockets>,

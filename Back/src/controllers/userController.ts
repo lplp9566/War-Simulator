@@ -4,42 +4,65 @@ import Users, { IUser } from "../models/users";
 import organization from "../models/organization";
 import { getUserByToken } from "../servers/server";
 const SECRET_KEY: string = process.env.SECRET_KEY || " my_secret";
-
 export const createUser = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const user = req.body;
-
-  try {
-    const findUserName = await Users.findOne({ userName: user.userName });
-    if (findUserName) {
-      res.status(400).json({ message: "username is already use" });
-      return;
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    const user = req.body;
+    console.log("Received user:", user);
+    try {
+      const findUserName = await Users.findOne({ userName: user.userName });
+      if (findUserName) {
+        res.status(400).json({ message: "username is already use" });
+        return;
+      }
+  
+      if (user.organization !== "IDF") {
+        const resources = await getResources(user.organization);
+        if (!resources) {
+          res.status(400).json({ message: "Organization resources not found" });
+          return;
+        }
+  
+        const newUser: IUser = new Users({
+          userName: user.userName,
+          password: user.password,
+          organization: user.organization,
+          resources: resources,
+        });
+        newUser.resources?.push();
+        const addUser = await newUser.save();
+        res.status(201).json({ id: addUser._id, newUser });
+      } else {
+        const resources = await getResources(user.location);
+        console.log("Resources for location:", resources);
+        if (resources) {
+          const newUser: IUser = new Users({
+            userName: user.userName,
+            password: user.password,
+            organization: user.organization,
+            resources: resources,
+            location: user.location,
+          });
+          newUser.resources?.push();
+          console.log("User location:", newUser.location);
+          const addUser = await newUser.save();
+          res.status(201).json({ id: addUser._id, newUser });
+        } else {
+          res.status(400).json({ message: "Location resources not found" });
+        }
+      }
+    } catch (error) {
+      console.error("Error in userName:", error);
+      res.status(500).json({ error: "Internal server error" });
     }
-
-    const resources = await getResources(user.organization);
-    const newUser: IUser = new Users({
-      userName: user.userName,
-      password: user.password,
-      organization: user.organization,
-      resources: resources,
-    });
-
-    newUser.resources?.push();
-    const addUser = await newUser.save();
-
-    res.status(201).json({ id: addUser._id, newUser });
-  } catch (error) {
-    console.error("Error in userName:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
+  };
+  
 
 const getResources = async (name: string) => {
   const organizationUser = await organization.findOne({ name: name });
-  return organizationUser?.resources;
-};
+  return organizationUser?.resources}
+
 
 export const loginUser = async (req:Request,res:Response)=>{
     const {userName,password} =req.body;
