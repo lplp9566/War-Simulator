@@ -6,6 +6,7 @@ import missiles from "./models/missiles";
 import organization, { IOrganization } from "./models/organization";
 import users from "./models/users";
 import router from "./routes/authRoute";
+import attacks from "./models/attacks";
 
 dotenv.config();
 
@@ -29,7 +30,7 @@ app.listen(PORT, () => {
 
 // const ff = async (): Promise<void> => {
 //   try {
-//     const missile = await organization.find()
+//     const missile = await attacks.find()
 //     console.log(missile);
   
 //   } catch (error) {

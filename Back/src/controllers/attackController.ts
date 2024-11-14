@@ -18,9 +18,9 @@ try {
 } 
 export const createAttack = async (req:Request,res:Response):Promise<void>=>{
     try {
-        const{usersToken,nameOfMissile} =req.body
+        const{usersToken,nameOfMissile,direction} =req.body
        
-        const missileTime = await addAttack(usersToken,nameOfMissile)
+        const missileTime = await addAttack(usersToken,nameOfMissile,direction)
     
         if(!missileTime){
             throw new Error()
@@ -31,3 +31,4 @@ export const createAttack = async (req:Request,res:Response):Promise<void>=>{
         res.status(400).json("JJJJ")
     }
 }
+
